@@ -4,16 +4,16 @@ services:
 
   web:
     build: .
-    command: python3 rating_back/manage.py runserver 0.0.0.0:8000
+    command: python3 manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/code
     ports:
       - '8000:8000'
+    env_file: env.txt
 
 
   db:
     image: postgres
     volumes:
       - /var/lib/postgresql/data
-    environment:
-      - POSTGRES_PASSWORD=password
+    env_file: env.txt

@@ -1,5 +1,0 @@
-psycopg2
-django
-djangorestframework
-djangorestframework-jwt
-django-filter

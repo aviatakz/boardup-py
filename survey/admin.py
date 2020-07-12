@@ -29,8 +29,12 @@ class InterviewAdmin(admin.ModelAdmin):
     list_display = ('user', 'target_user', 'comment', 'created_at')
 
 
+class SurveyAdmin(admin.ModelAdmin):
+    list_display = ('interview',)
+
+
 admin.site.register(Grade, GradeAdmin)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Interview, InterviewAdmin)
 admin.site.register(Category, CategoryAdmin)
-admin.site.register(Survey)
+admin.site.register(Survey, SurveyAdmin)

@@ -30,7 +30,7 @@ class InterviewAdmin(admin.ModelAdmin):
 
 
 class SurveyAdmin(admin.ModelAdmin):
-    list_display = ('interview',)
+    list_display = ('name',)
 
 
 admin.site.register(Grade, GradeAdmin)

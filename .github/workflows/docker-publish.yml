@@ -79,6 +79,7 @@ jobs:
         env:
           GITHUB_USERNAME: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DOCKER_IMAGE: $IMAGE_ID:$VERSION
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
@@ -88,5 +89,6 @@ jobs:
           script: |
             docker stop $(docker ps -a -q)
             docker login docker.pkg.github.com -u ${{ github.actor }} -p $GITHUB_TOKEN
-            docker pull $IMAGE_ID:$VERSION
-            docker run -dit -p 8000:8000 $IMAGE_ID:$VERSION
+            echo $DOCKER_IMAGE
+            docker pull $DOCKER_IMAGE
+            docker run -dit -p 8000:8000 $DOCKER_IMAGE

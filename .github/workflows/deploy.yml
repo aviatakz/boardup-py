@@ -3,7 +3,7 @@ name: build
 on:
   push:
     branches:
-      - master
+      - staging
 
 jobs:
   build:
@@ -21,9 +21,9 @@ jobs:
       env:
         CI: true
     - name: Publish to Github Packages Registry
-      uses: elgohr/Publish-Docker-Github-Action@master
+      uses: aviatakz/boardup-pyn@staging
       with:
-        name: my_github_username/my_repository_name/my_image_name
+        name: aviatakz/boardup-py/my_image_name
         registry: docker.pkg.github.com
         username: ${{ secrets.GITHUB_USERNAME }}
         password: ${{ secrets.GITHUB_TOKEN }}

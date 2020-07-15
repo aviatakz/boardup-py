@@ -74,6 +74,7 @@ jobs:
           docker push $IMAGE_ID:$VERSION
 
   deploy:
+    runs-on: ubuntu-latest
     steps:
       - name: Deploy package to digitalocean
         uses: appleboy/ssh-action@master

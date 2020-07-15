@@ -3,7 +3,7 @@ name: build
 on:
   push:
     branches:
-      - staging
+      - master
 
 jobs:
   build:
@@ -21,7 +21,7 @@ jobs:
       env:
         CI: true
     - name: Publish to Github Packages Registry
-      uses: aviatakz/boardup-py@staging
+      uses: aviatakz/boardup-py@master
       with:
         name: aviatakz/boardup-py/staging_latest
         registry: docker.pkg.github.com

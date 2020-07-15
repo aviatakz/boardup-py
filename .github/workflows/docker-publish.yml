@@ -73,6 +73,8 @@ jobs:
           docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
 
+  deploy:
+    steps:
       - name: Deploy package to digitalocean
         uses: appleboy/ssh-action@master
         env:

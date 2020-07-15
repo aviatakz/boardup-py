@@ -74,10 +74,10 @@ jobs:
           docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
 
-      - name: Deploy package to digitalocean
-          uses: appleboy/ssh-action@master
-          script: |
-            echo "HI"
+#      - name: Deploy package to digitalocean
+#          uses: appleboy/ssh-action@master
+#          script: |
+#            echo "HI"
 #          env:
 #            GITHUB_USERNAME: ${{ github.actor }}
 #            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

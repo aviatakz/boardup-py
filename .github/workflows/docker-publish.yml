@@ -76,8 +76,6 @@ jobs:
 
       - name: Deploy package to digitalocean
         uses: appleboy/ssh-action@master
-        script: |
-          echo "HI"
         env:
           GITHUB_USERNAME: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

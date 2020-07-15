@@ -74,6 +74,7 @@ jobs:
           docker push $IMAGE_ID:$VERSION
 
   deploy:
+    needs: push
     runs-on: ubuntu-latest
     steps:
       - name: Deploy package to digitalocean

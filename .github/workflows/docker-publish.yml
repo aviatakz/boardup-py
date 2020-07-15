@@ -15,7 +15,7 @@ on:
 
 env:
   IMAGE_NAME: boardup-py-prod
-  IMAGE_ID: docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
+  IMAGE_ID: docker.pkg.github.com/${{ github.repository }}/boardup-py-prod
 
 jobs:
   # Run tests.

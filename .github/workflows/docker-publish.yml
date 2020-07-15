@@ -85,7 +85,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          envs: GITHUB_USERNAME, GITHUB_TOKEN
+          envs: GITHUB_USERNAME, GITHUB_TOKEN, DOCKER_IMAGE
           script: |
             docker stop $(docker ps -a -q)
             docker login docker.pkg.github.com -u ${{ github.actor }} -p $GITHUB_TOKEN

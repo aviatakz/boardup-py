@@ -1,4 +1,4 @@
-env.txt
+.env
 /.idea
 /rating_back/__pycache__
 /survey/__pycache__

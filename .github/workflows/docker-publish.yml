@@ -15,6 +15,7 @@ on:
 
 env:
   IMAGE_NAME: boardup-py-prod
+  IMAGE_ID: docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
 
 jobs:
   # Run tests.
@@ -54,8 +55,6 @@ jobs:
 
       - name: Push image
         run: |
-          IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
-
           # Change all uppercase to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
 
@@ -79,16 +78,16 @@ jobs:
         env:
           GITHUB_USERNAME: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DOCKER_IMAGE: $IMAGE_ID:$VERSION
+          IMAGE_NAME: $IMAGE_NAME
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          envs: GITHUB_USERNAME, GITHUB_TOKEN, DOCKER_IMAGE
+          envs: GITHUB_USERNAME, GITHUB_TOKEN, IMAGE_NAME
           script: |
             docker stop $(docker ps -a -q)
             docker login docker.pkg.github.com -u ${{ github.actor }} -p $GITHUB_TOKEN
-            echo $DOCKER_IMAGE
-            docker pull $DOCKER_IMAGE
-            docker run -dit -p 8000:8000 $DOCKER_IMAGE
+            echo $IMAGE_NAME:latest
+            docker pull $IMAGE_NAME:latest
+            docker run -dit -p 8000:8000 $IMAGE_NAME:latest

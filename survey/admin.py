@@ -26,7 +26,7 @@ class QuestionAdmin(admin.ModelAdmin):
 
 
 class InterviewAdmin(admin.ModelAdmin):
-    list_display = ('user', 'target_user', 'comment', 'created_at')
+    list_display = ('user', 'target_user', 'comment', 'created_at', 'survey')
 
 
 class SurveyAdmin(admin.ModelAdmin):

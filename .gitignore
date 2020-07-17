@@ -1,7 +1,9 @@
-env.txt
+.env
 /.idea
 /rating_back/__pycache__
 /authentication/__pycache__
 /authentication/migrations
 /user/__pycache__
 /user/migrations
+/survey/__pycache__
+/survey/migrations

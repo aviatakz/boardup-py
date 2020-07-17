@@ -16,9 +16,6 @@ class UsersByGroupSet(viewsets.ViewSet):
 class GroupList(generics.ListCreateAPIView):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
-    filter_backends = (DjangoFilterBackend,)
-    filterset_fields = ('name',)
-    permission_classes = (BasePermission,)
 
 class GroupDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Group.objects.all()
@@ -28,9 +25,6 @@ class GroupDetail(generics.RetrieveUpdateDestroyAPIView):
 class UserList(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    filter_backends = (DjangoFilterBackend,)
-    filterset_fields = ('username',)
-    permission_classes = (BasePermission,)
 
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):

@@ -99,10 +99,10 @@ jobs:
             echo $IMAGE_ID:latest
             docker pull $IMAGE_ID:latest
             docker run -dit -p 8000:8000 \
-             -e DB_NAME='$DB_NAME' \
-             -e DB_USER='$DB_USER' \
-             -e DB_PASSWORD='$DB_PASSWORD' \
-             -e DB_HOST='$DB_HOST' \
+             -e DB_NAME=$DB_NAME \
+             -e DB_USER=$DB_USER \
+             -e DB_PASSWORD=$DB_PASSWORD \
+             -e DB_HOST=$DB_HOST \
              -e DB_PORT=$DB_PORT \
-             -e GITHUB_TOKEN='GITHUB_TOKEN' \
+             -e GITHUB_TOKEN=$GITHUB_TOKEN \
             $IMAGE_ID:latest

@@ -92,7 +92,7 @@ jobs:
             docker stop $(docker ps -a -q)
             docker login docker.pkg.github.com -u ${{ github.actor }} -p $GITHUB_TOKEN
             echo $IMAGE_ID:latest
-            echo ${{ secrets.PORT }}
+            echo ${{ secrets.DB_PORT }}
             docker pull $IMAGE_ID:latest
             docker run -dit -p 8000:8000 \
              -e DB_NAME=${{ secrets.DB_NAME }} \

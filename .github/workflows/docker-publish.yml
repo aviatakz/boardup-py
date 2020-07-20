@@ -37,41 +37,41 @@ jobs:
 
   # Push image to GitHub Packages.
   # See also https://docs.docker.com/docker-hub/builds/
-  push:
-    # Ensure test job passes before pushing image.
-#    needs: test
-
-    runs-on: ubuntu-latest
-#    if: github.event_name == 'push'
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Build image
-        run: docker build . --file Dockerfile-prod --tag $IMAGE_NAME
-
-      - name: Log into registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
-
-      - name: Push image
-        run: |
-          # Change all uppercase to lowercase
-          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-
-          # Strip git ref prefix from version
-          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-
-          # Strip "v" prefix from tag name
-          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-
-          # Use Docker `latest` tag convention
-          [ "$VERSION" == "master" ] && VERSION=latest
-
-          echo IMAGE_ID=$IMAGE_ID
-          echo VERSION=$VERSION
-
-          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
-          docker push $IMAGE_ID:$VERSION
+#  push:
+#    # Ensure test job passes before pushing image.
+##    needs: test
+#
+#    runs-on: ubuntu-latest
+##    if: github.event_name == 'push'
+#
+#    steps:
+#      - uses: actions/checkout@v2
+#
+#      - name: Build image
+#        run: docker build . --file Dockerfile-prod --tag $IMAGE_NAME
+#
+#      - name: Log into registry
+#        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+#
+#      - name: Push image
+#        run: |
+#          # Change all uppercase to lowercase
+#          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+#
+#          # Strip git ref prefix from version
+#          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+#
+#          # Strip "v" prefix from tag name
+#          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+#
+#          # Use Docker `latest` tag convention
+#          [ "$VERSION" == "master" ] && VERSION=latest
+#
+#          echo IMAGE_ID=$IMAGE_ID
+#          echo VERSION=$VERSION
+#
+#          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+#          docker push $IMAGE_ID:$VERSION
 
   deploy:
 #    needs: push
@@ -82,17 +82,12 @@ jobs:
         env:
           GITHUB_USERNAME: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DB_NAME: ${{ secrets.NAME }}
-          DB_USER: ${{ secrets.USER }}
-          DB_PASSWORD: ${{ secrets.PASSWORD }}
-          DB_HOST: ${{ secrets.HOST }}
-          DB_PORT: ${{ secrets.PORT }}
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          envs: GITHUB_USERNAME, GITHUB_TOKEN, IMAGE_ID, DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT
+          envs: GITHUB_USERNAME, GITHUB_TOKEN, IMAGE_ID
           script: |
             docker stop $(docker ps -a -q)
             docker login docker.pkg.github.com -u ${{ github.actor }} -p $GITHUB_TOKEN
@@ -100,10 +95,10 @@ jobs:
             echo ${{ secrets.PORT }}
             docker pull $IMAGE_ID:latest
             docker run -dit -p 8000:8000 \
-             -e DB_NAME=${{ secrets.NAME }} \
-             -e DB_USER=${{ secrets.USER }} \
-             -e DB_PASSWORD=${{ secrets.PASSWORD }} \
-             -e DB_HOST=${{ secrets.HOST }} \
-             -e DB_PORT=${{ secrets.PORT }} \
-             -e GITHUB_TOKEN=$GITHUB_TOKEN \
+             -e DB_NAME=${{ secrets.DB_NAME }} \
+             -e DB_USER=${{ secrets.DB_USER }} \
+             -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
+             -e DB_HOST=${{ secrets.DB_HOST }} \
+             -e DB_PORT=${{ secrets.DB_PORT }} \
+             -e GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} \
             $IMAGE_ID:latest

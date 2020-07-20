@@ -92,8 +92,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          envs: GITHUB_USERNAME, GITHUB_TOKEN, IMAGE_ID, DB_NAME, DB_USER, DB_PASSWORD, DB_HOST,
-          DB_PORT
+          envs: GITHUB_USERNAME, GITHUB_TOKEN, IMAGE_ID, DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT
           script: |
             docker stop $(docker ps -a -q)
             docker login docker.pkg.github.com -u ${{ github.actor }} -p $GITHUB_TOKEN

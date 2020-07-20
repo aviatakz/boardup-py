@@ -74,7 +74,7 @@ jobs:
           docker push $IMAGE_ID:$VERSION
 
   deploy:
-    needs: push
+#    needs: push
     runs-on: ubuntu-latest
     steps:
       - name: Deploy package to digitalocean
@@ -97,6 +97,7 @@ jobs:
             docker stop $(docker ps -a -q)
             docker login docker.pkg.github.com -u ${{ github.actor }} -p $GITHUB_TOKEN
             echo $IMAGE_ID:latest
+            echo ${{ secrets.PORT }}
             docker pull $IMAGE_ID:latest
             docker run -dit -p 8000:8000 \
              -e DB_NAME=${{ secrets.NAME }} \

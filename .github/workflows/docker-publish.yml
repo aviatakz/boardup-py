@@ -92,10 +92,17 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          envs: GITHUB_USERNAME, GITHUB_TOKEN, IMAGE_ID
+          envs: GITHUB_USERNAME, GITHUB_TOKEN, IMAGE_ID, DB_NAME, DB_USER, DB_PASSWORD, DB_HOST,
+          DB_PORT
           script: |
             docker stop $(docker ps -a -q)
             docker login docker.pkg.github.com -u ${{ github.actor }} -p $GITHUB_TOKEN
             echo $IMAGE_ID:latest
             docker pull $IMAGE_ID:latest
-            docker run -dit -p 8000:8000 $IMAGE_ID:latest
+            docker run -dit -p 8000:8000 \
+             -e DB_NAME=$DB_NAME \
+             -e DB_USER=DB_USER \
+             -e DB_PASSWORD=DB_PASSWORD \
+             -e DB_HOST=DB_HOST \
+             -e DB_PORT=DB_PORT \
+            $IMAGE_ID:latest

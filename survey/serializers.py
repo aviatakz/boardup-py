@@ -9,8 +9,8 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class QuestionSerializer(serializers.ModelSerializer):
-    category_id = serializers.IntegerField(write_only=True)
-    survey_id = serializers.IntegerField(write_only=True)
+    category_id = serializers.IntegerField(read_only=False)
+    survey_id = serializers.IntegerField(read_only=False)
 
     class Meta:
         model = Question
@@ -18,6 +18,12 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 
 class SurveySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Survey
+        fields = ('id', 'name')
+
+
+class SurveyQuestionsSerializer(serializers.ModelSerializer):
     questions = QuestionSerializer(many=True, read_only=True)
 
     class Meta:
@@ -41,7 +47,8 @@ class InterviewSerializer(serializers.ModelSerializer):
 
 
 class InterviewSurveyQuesitonSerializer(serializers.ModelSerializer):
-    survey = SurveySerializer(read_only=True)
+    survey = SurveyQuestionsSerializer(read_only=True)
+
     class Meta:
         model = Interview
         fields = ('id', 'user_id', 'target_user_id', 'comment', 'survey')

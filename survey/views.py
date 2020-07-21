@@ -24,7 +24,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
             headers = self.get_success_headers(serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
         else:
-            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class InterviewViewSet(viewsets.ModelViewSet):
@@ -37,7 +37,7 @@ class InterviewViewSet(viewsets.ModelViewSet):
         serializer = InterviewSurveyQuesitonSerializer(instance)
         return Response(serializer.data)
 
-    # def get_queryset(self):
+    # def get_queryset(self): //TODO
     #     self.queryset = Interview.objects.filter(user=self.request.user)
 
 

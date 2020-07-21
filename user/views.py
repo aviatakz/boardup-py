@@ -1,24 +1,14 @@
 from django.contrib.auth.models import User, Group
-from rest_framework import generics
+from rest_framework import viewsets
 from .serializers import UserSerializer, GroupSerializer
 
 
-class GroupList(generics.ListCreateAPIView):
+class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
 
 
-class GroupDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
-
-
-class UserList(generics.ListCreateAPIView):
+class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     filterset_fields = ('groups',)
-
-
-class UserDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer

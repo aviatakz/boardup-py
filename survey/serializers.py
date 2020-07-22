@@ -14,13 +14,13 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Question
-        fields = ('id', 'description', 'category_id', 'survey_id', 'created_at')
+        fields = ('id', 'description', 'category_id', 'survey_id', 'created_at', 'order')
 
 
 class SurveySerializer(serializers.ModelSerializer):
     class Meta:
         model = Survey
-        fields = ('id', 'name')
+        fields = ('id', 'name', 'start_date', 'end_date', 'is_active')
 
 
 class SurveyQuestionsSerializer(serializers.ModelSerializer):
@@ -28,7 +28,7 @@ class SurveyQuestionsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Survey
-        fields = ('id', 'name', 'questions')
+        fields = ('id', 'name', 'start_date', 'end_date', 'is_active', 'questions')
 
 
 class GradeSerializer(serializers.ModelSerializer):

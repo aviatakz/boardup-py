@@ -139,6 +139,12 @@ REST_FRAMEWORK = {
 
 REST_USE_JWT = True
 
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'user.serializers.UserSerializer',
+}
+
+AUTH_USER_MODEL = 'user.User'
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 

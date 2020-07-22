@@ -38,6 +38,7 @@ class Question(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="categories")
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE, related_name="questions")
+    order = models.IntegerField()
 
     class Meta:
         verbose_name = "Question"

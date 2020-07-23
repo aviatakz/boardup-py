@@ -145,6 +145,8 @@ REST_AUTH_SERIALIZERS = {
 
 AUTH_USER_MODEL = 'user.User'
 
+SOCIALACCOUNT_ADAPTER = 'authentication.adapters.CustomSocialAccountAdapter'
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 

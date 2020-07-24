@@ -5,8 +5,9 @@ from rest_framework.fields import JSONField
 
 class MobileDevice(models.Model):
     owner = models.OneToOneField(User, related_name='device', on_delete=models.CASCADE)
-    platform = models.CharField(max_length=20, choices=(('iOS', 'iOS'), ('Android', 'Android'),))
-    token = models.TextField()
+    type = models.CharField(max_length=20, choices=(('iOS', 'iOS'), ('Android', 'Android'),))
+    registration_id = models.TextField()
+    device_id = models.TextField()
 
 
 class MobileNotification(models.Model):

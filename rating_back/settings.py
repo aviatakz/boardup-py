@@ -51,7 +51,9 @@ INSTALLED_APPS = [
     #my apps
     'user',
     'authentication',
-    'survey'
+    'survey',
+    'fcm_django',
+    'push'
 ]
 
 SITE_ID = 1
@@ -135,6 +137,12 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
     ),
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+}
+
+FCM_DJANGO_SETTINGS = {
+        "FCM_SERVER_KEY": "[your api key]",
+        "ONE_DEVICE_PER_USER": True,
+        "DELETE_INACTIVE_DEVICES": True
 }
 
 REST_USE_JWT = True

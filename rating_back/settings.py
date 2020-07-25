@@ -51,7 +51,9 @@ INSTALLED_APPS = [
     #my apps
     'user',
     'authentication',
-    'survey'
+    'survey',
+    'push',
+    'pyfcm'
 ]
 
 SITE_ID = 1

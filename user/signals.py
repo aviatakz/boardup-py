@@ -7,3 +7,4 @@ from allauth.socialaccount.models import SocialAccount
 def add_extra_data_to_the_user(sender, instance, created, *args, **kwargs):
     instance.user.photo = instance.extra_data['picture']
     instance.user.save()
+

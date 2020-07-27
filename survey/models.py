@@ -1,13 +1,11 @@
-from datetime import datetime
-
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 
 
 class Survey(models.Model):
     name = models.CharField(max_length=300)
-    start_date = models.DateTimeField(blank=True, default=datetime.now)
-    end_date = models.DateTimeField(blank=True, default=datetime.now)
+    start_date = models.DateTimeField(blank=True)
+    end_date = models.DateTimeField(blank=True)
     is_active = models.BooleanField(default=False)
 
     class Meta:

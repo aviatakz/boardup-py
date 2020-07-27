@@ -27,8 +27,6 @@ DEBUG = True
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
 
 
-# Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -49,7 +47,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'django_filters',
     #my apps
-    'user',
+    'user.apps.UsersConfig',
     'authentication',
     'survey'
 ]
@@ -138,6 +136,15 @@ REST_FRAMEWORK = {
 }
 
 REST_USE_JWT = True
+
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'user.serializers.UserSerializer',
+}
+
+AUTH_USER_MODEL = 'user.User'
+
+SOCIALACCOUNT_ADAPTER = 'authentication.adapters.CustomSocialAccountAdapter'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/

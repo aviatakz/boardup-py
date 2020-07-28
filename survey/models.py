@@ -16,8 +16,8 @@ class Survey(models.Model):
 
 
 class Interview(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="users")
-    target_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="target_users")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="interviews")
+    target_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="target_interviews")
     comment = models.TextField(default='')
     created_at = models.DateField(auto_now_add=True)
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE, related_name="interviews")
@@ -38,7 +38,7 @@ class Category(models.Model):
 class Question(models.Model):
     description = models.TextField(default='')
     created_at = models.DateField(auto_now_add=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="categories")
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="questions")
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE, related_name="questions")
     order = models.IntegerField(default=0)
 
@@ -50,7 +50,7 @@ class Question(models.Model):
 class Grade(models.Model):
     created_at = models.DateField(auto_now_add=True)
     value = models.IntegerField()
-    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="questions")
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="grades")
     interview = models.ForeignKey(Interview, on_delete=models.CASCADE, related_name="grades")
 
     class Meta:

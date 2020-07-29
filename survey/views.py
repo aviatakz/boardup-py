@@ -1,9 +1,9 @@
+from django.http import HttpResponse
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
-
+import json
 from survey.models import Question, Interview, Grade, Survey, Category
 from survey.serializers import QuestionSerializer, InterviewSerializer, \
     GradeSerializer, SurveySerializer, InterviewSurveyQuesitonSerializer, CategorySerializer
@@ -12,7 +12,6 @@ from survey.serializers import QuestionSerializer, InterviewSerializer, \
 class QuestionViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
-    permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['survey', 'category', ]
 
@@ -30,21 +29,57 @@ class QuestionViewSet(viewsets.ModelViewSet):
 class InterviewViewSet(viewsets.ModelViewSet):
     queryset = Interview.objects.all()
     serializer_class = InterviewSerializer
-    permission_classes = [IsAuthenticated]
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = InterviewSurveyQuesitonSerializer(instance)
         return Response(serializer.data)
 
-    # def get_queryset(self): //TODO
-    #     self.queryset = Interview.objects.filter(user=self.request.user)
+    @action(detail=False, methods=['post'])
+    def results(self, request):
+        user_id = request.data["user_id"]
+        survey_id = request.data["survey_id"]
+        result_data = {}
+
+        self_rating_objects = Grade.objects.filter(interview__survey=survey_id, interview__target_user=user_id,
+                                                   interview__user=user_id)
+        self_res = average_list(self_rating_objects)
+        colleagues_rating_objects = Grade.objects.filter(interview__survey=survey_id, interview__target_user=user_id).exclude(
+            interview__user=user_id
+        )
+        colleagues_res = average_list(colleagues_rating_objects)
+        company_rating_objects = Grade.objects.all()
+        company_res = average_list(company_rating_objects)
+
+        result_data["self"] = self_res
+        result_data["colleagues"] = colleagues_res
+        result_data["company"] = company_res
+
+        return HttpResponse(json.dumps(result_data))
+
+
+def average_list(objects):
+    map_self = {}
+    list_self = {}
+    for grade in objects:
+        category = grade.question.category.pk
+        if category in map_self:
+            map_self[category] += 1
+            list_self[category] += grade.value
+        else:
+            map_self[category] = 1
+            list_self[category] = grade.value
+
+    result = {}
+    for key, value in map_self.items():
+        result[key] = list_self[key] / value
+
+    return result
 
 
 class GradeViewSet(viewsets.ModelViewSet):
     queryset = Grade.objects.all()
     serializer_class = GradeSerializer
-    permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['interview']
 

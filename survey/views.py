@@ -12,7 +12,7 @@ from survey.serializers import QuestionSerializer, InterviewSerializer, \
 class QuestionViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated] //TODO
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['survey', 'category', ]
 

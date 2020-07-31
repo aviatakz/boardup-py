@@ -12,7 +12,7 @@ class GroupSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    groups = GroupSerializer(many=True, read_only=True)
+    groups = GroupSerializer(many=True)
 
     class Meta:
         model = User

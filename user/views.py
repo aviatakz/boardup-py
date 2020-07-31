@@ -1,12 +1,9 @@
-import json
-
 from django.contrib.auth.models import Group
-from django.http import JsonResponse, HttpResponse
+from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from .models import User
-from rest_framework import viewsets, status
 from .serializers import UserSerializer, GroupSerializer
 
 

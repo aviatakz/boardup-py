@@ -41,6 +41,10 @@ class GradeSerializer(serializers.ModelSerializer):
 
 
 class InterviewSerializer(serializers.ModelSerializer):
+    user_id = serializers.IntegerField(read_only=False)
+    target_user_id = serializers.IntegerField(read_only=False)
+    survey_id = serializers.IntegerField(read_only=False)
+
     class Meta:
         model = Interview
         fields = ('id', 'user_id', 'target_user_id', 'survey_id', 'created_at', 'comment')

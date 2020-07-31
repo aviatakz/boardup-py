@@ -6,7 +6,7 @@ from rest_framework.response import Response
 
 from survey.models import Question, Interview, Grade, Survey, Category
 from survey.serializers import QuestionSerializer, InterviewSerializer, \
-    GradeSerializer, SurveySerializer, InterviewSurveyQuesitonSerializer, CategorySerializer
+    GradeSerializer, SurveySerializer, InterviewSurveyQuesitonSerializer, CategorySerializer, SurveyQuestionsSerializer
 
 
 class QuestionViewSet(viewsets.ModelViewSet):
@@ -30,7 +30,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
 class InterviewViewSet(viewsets.ModelViewSet):
     queryset = Interview.objects.all()
     serializer_class = InterviewSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated] //TODO
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -44,7 +44,7 @@ class InterviewViewSet(viewsets.ModelViewSet):
 class GradeViewSet(viewsets.ModelViewSet):
     queryset = Grade.objects.all()
     serializer_class = GradeSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated] //TODO
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['interview']
 
@@ -52,6 +52,11 @@ class GradeViewSet(viewsets.ModelViewSet):
 class SurveyViewSet(viewsets.ModelViewSet):
     queryset = Survey.objects.all()
     serializer_class = SurveySerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = SurveyQuestionsSerializer(instance)
+        return Response(serializer.data)
 
 
 class CategoryViewSet(viewsets.ModelViewSet):

@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
+from django.contrib.postgres.fields import JSONField
 from django.db import models
-from rest_framework.fields import JSONField
 from pyfcm import FCMNotification
 
 from rating_back import settings
@@ -19,7 +19,7 @@ class MobileNotification(models.Model):
     title = models.CharField(max_length=512, null=True, blank=True)
     message = models.TextField()
     status = models.CharField(max_length=10, default='unread')
-    data = JSONField();
+    data = JSONField()
 
     def send_notification(**self):
         recipient = User.objects.get(id=self.get("recipient_id"))

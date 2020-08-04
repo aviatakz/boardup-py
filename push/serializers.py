@@ -1,4 +1,4 @@
-from push.models import MobileDevice, MobileNotification
+from .models import MobileDevice, MobileNotification
 from survey import serializers
 
 
@@ -9,7 +9,6 @@ class DeviceSerializer(serializers.ModelSerializer):
 
 
 class NotificationSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = MobileNotification
         fields = ('id', 'recepient', 'title', 'message', 'status', 'data')

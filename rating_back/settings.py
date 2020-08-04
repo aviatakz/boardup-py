@@ -26,7 +26,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
 
-FIREBASE_API_KEY = 'AIzaSyA574t4t7t8gmIxs1DZnkRKCDvDd6fNDno'
+FIREBASE_API_KEY = os.environ.get('FIREBASE_API_KEY', '')
 
 # Application definition
 

@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 
-from push.models import MobileDevice, MobileNotification
-from push.serializers import DeviceSerializer, NotificationSerializer
+from .models import MobileDevice, MobileNotification
+from .serializers import DeviceSerializer, NotificationSerializer
 
 
 class DeviceViewSet(viewsets.ModelViewSet):

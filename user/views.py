@@ -13,10 +13,10 @@ class GroupViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['patch'])
     def add_users(self, request):
-        users_id = request.data["users"]
-        groups_id = request.data["groups"]
-        users = User.objects.filter(pk__in=users_id)
-        groups = Group.objects.filter(pk__in=groups_id)
+        user_ids = request.data["users"]
+        group_ids = request.data["groups"]
+        users = User.objects.filter(pk__in=user_ids)
+        groups = Group.objects.filter(pk__in=group_ids)
         for user in users:
             for group in groups:
                 user.groups.add(group)

@@ -1,9 +1,11 @@
+import json
+
 from django.http import HttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-import json
+
 from survey.models import Question, Interview, Grade, Survey, Category
 from survey.serializers import QuestionSerializer, InterviewSerializer, \
     GradeSerializer, SurveySerializer, InterviewSurveyQuesitonSerializer, CategorySerializer
@@ -39,23 +41,21 @@ class InterviewViewSet(viewsets.ModelViewSet):
     def results(self, request):
         user_id = request.data["user_id"]
         survey_id = request.data["survey_id"]
-        result_data = {}
 
-        self_rating_objects = Grade.objects.filter(interview__survey=survey_id, interview__target_user=user_id,
-                                                   interview__user=user_id)
-        self_res = average_list(self_rating_objects)
-        colleagues_rating_objects = Grade.objects.filter(interview__survey=survey_id, interview__target_user=user_id).exclude(
+        grades = Grade.objects.all()
+        self_rating_grades = grades.filter(interview__survey=survey_id, interview__target_user=user_id,
+                                           interview__user=user_id)
+        self_res = average_list(self_rating_grades)
+        colleagues_rating_grades = grades.filter(interview__survey=survey_id, interview__target_user=user_id).exclude(
             interview__user=user_id
         )
-        colleagues_res = average_list(colleagues_rating_objects)
-        company_rating_objects = Grade.objects.all()
-        company_res = average_list(company_rating_objects)
+        colleagues_res = average_list(colleagues_rating_grades)
+        company_res = average_list(grades)
 
-        result_data["self"] = self_res
-        result_data["colleagues"] = colleagues_res
-        result_data["company"] = company_res
+        categories = {category.pk: category.name for category in Category.objects.all()}
+        result_data = {"categories": categories, "self": self_res, "colleagues": colleagues_res, "company": company_res}
 
-        return HttpResponse(json.dumps(result_data))
+        return HttpResponse(json.dumps(result_data, ensure_ascii=False))
 
 
 def average_list(objects):

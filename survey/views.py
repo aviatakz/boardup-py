@@ -6,6 +6,7 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
+from survey.functions import average_list
 from survey.models import Question, Interview, Grade, Survey, Category
 from survey.serializers import QuestionSerializer, InterviewSerializer, \
     GradeSerializer, SurveySerializer, InterviewSurveyQuesitonSerializer, CategorySerializer, SurveyQuestionsSerializer
@@ -56,25 +57,6 @@ class InterviewViewSet(viewsets.ModelViewSet):
         result_data = {"categories": categories, "self": self_res, "colleagues": colleagues_res, "company": company_res}
 
         return HttpResponse(json.dumps(result_data, ensure_ascii=False))
-
-
-def average_list(objects):
-    map_self = {}
-    list_self = {}
-    for grade in objects:
-        category = grade.question.category.pk
-        if category in map_self:
-            map_self[category] += 1
-            list_self[category] += grade.value
-        else:
-            map_self[category] = 1
-            list_self[category] = grade.value
-
-    result = {}
-    for key, value in map_self.items():
-        result[key] = list_self[key] / value
-
-    return result
 
 
 class GradeViewSet(viewsets.ModelViewSet):

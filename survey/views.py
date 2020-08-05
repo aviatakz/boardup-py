@@ -7,7 +7,7 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from survey.functions import to_map
+
 from survey.models import Question, Interview, Grade, Survey, Category
 from survey.serializers import QuestionSerializer, InterviewSerializer, \
     GradeSerializer, SurveySerializer, InterviewSurveyQuesitonSerializer, CategorySerializer, SurveyQuestionsSerializer
@@ -44,18 +44,18 @@ class InterviewViewSet(viewsets.ModelViewSet):
         user_id = request.data["user_id"]
         survey_id = request.data["survey_id"]
 
-        grades = Grade.objects.all()
-        company = grades.filter(interview__survey=survey_id).values('question__category').annotate(dsum=Avg('value'))
+        grades = Grade.objects.values('question__category').annotate(avg=Avg('value'))
+        company = grades.filter(interview__survey=survey_id)
         colleagues = grades.filter(interview__survey=survey_id, interview__target_user=user_id).exclude(
             interview__user=user_id
-        ).values('question__category').annotate(dsum=Avg('value'))
+        )
         selff = grades.filter(interview__survey=survey_id, interview__target_user=user_id,
-                              interview__user=user_id).values('question__category').annotate(dsum=Avg('value'))
+                              interview__user=user_id)
 
         categories = {category.pk: category.name for category in Category.objects.all()}
 
-        res = {"categories": categories, "self": to_map(selff), "colleagues": to_map(colleagues),
-               "company": to_map(company)}
+        res = {"categories": categories, "self": list(selff), "colleagues": list(colleagues),
+               "company": list(company)}
         return HttpResponse(json.dumps(res, ensure_ascii=False))
 
 

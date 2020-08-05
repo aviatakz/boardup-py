@@ -32,7 +32,7 @@ class InterviewViewSet(viewsets.ModelViewSet):
     queryset = Interview.objects.all()
     serializer_class = InterviewSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['user', 'target_user']
+    filterset_fields = ['user', 'target_user', 'survey']
     # permission_classes = [IsAuthenticated] //TODO
 
     def retrieve(self, request, *args, **kwargs):

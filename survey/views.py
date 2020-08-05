@@ -4,9 +4,10 @@ from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
 
-from survey.models import Question, Interview, Grade, Survey, Category
-from survey.serializers import QuestionSerializer, InterviewSerializer, \
-    GradeSerializer, SurveySerializer, InterviewSurveyQuesitonSerializer, CategorySerializer, SurveyQuestionsSerializer
+from .models import Question, Interview, Grade, Survey, Category
+from .serializers import QuestionSerializer, InterviewSerializer, \
+    GradeSerializer, SurveySerializer, InterviewSurveyQuesitonSerializer, CategorySerializer,\
+    SurveyQuestionsSerializer
 
 
 class QuestionViewSet(viewsets.ModelViewSet):
@@ -30,7 +31,8 @@ class QuestionViewSet(viewsets.ModelViewSet):
 class InterviewViewSet(viewsets.ModelViewSet):
     queryset = Interview.objects.all()
     serializer_class = InterviewSerializer
-
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['user', 'target_user', 'survey']
     # permission_classes = [IsAuthenticated] //TODO
 
     def retrieve(self, request, *args, **kwargs):

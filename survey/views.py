@@ -18,7 +18,13 @@ class QuestionViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['post'])
     def create_questions(self, request):
-        bulk_create(self, request)
+        serializer = self.get_serializer(data=request.data, many=isinstance(request.data, list))
+        if serializer.is_valid():
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class InterviewViewSet(viewsets.ModelViewSet):
@@ -34,7 +40,13 @@ class InterviewViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['post'])
     def create_interviews(self, request):
-        bulk_create(self, request)
+        serializer = self.get_serializer(data=request.data, many=isinstance(request.data, list))
+        if serializer.is_valid():
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
     # def get_queryset(self): //TODO
     #     self.queryset = Interview.objects.filter(user=self.request.user)
@@ -61,13 +73,3 @@ class SurveyViewSet(viewsets.ModelViewSet):
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-
-
-def bulk_create(self, request):
-    serializer = self.get_serializer(data=request.data, many=isinstance(request.data, list))
-    if serializer.is_valid():
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-    else:
-        return Response(status=status.HTTP_400_BAD_REQUEST)

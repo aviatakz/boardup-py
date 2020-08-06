@@ -51,10 +51,9 @@ class InterviewViewSet(viewsets.ModelViewSet):
         )
         selff = grades.filter(interview__survey=survey_id, interview__target_user=user_id,
                               interview__user=user_id)
+        categories = CategorySerializer(Category.objects.all(), many=True)
 
-        categories = {category.pk: category.name for category in Category.objects.all()}
-
-        res = {"categories": categories, "self": list(selff), "colleagues": list(colleagues),
+        res = {"categories": categories.data, "self": list(selff), "colleagues": list(colleagues),
                "company": list(company)}
         return HttpResponse(json.dumps(res, ensure_ascii=False))
 

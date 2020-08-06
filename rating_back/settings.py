@@ -26,6 +26,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
 
+FIREBASE_API_KEY = os.environ.get('FIREBASE_API_KEY', '')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -49,7 +50,8 @@ INSTALLED_APPS = [
     #my apps
     'user.apps.UsersConfig',
     'authentication',
-    'survey'
+    'survey',
+    'push'
 ]
 
 SITE_ID = 1

@@ -7,7 +7,6 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-
 from survey.models import Question, Interview, Grade, Survey, Category
 from survey.serializers import QuestionSerializer, InterviewSerializer, \
     GradeSerializer, SurveySerializer, InterviewSurveyQuesitonSerializer, CategorySerializer, SurveyQuestionsSerializer
@@ -33,6 +32,8 @@ class QuestionViewSet(viewsets.ModelViewSet):
 class InterviewViewSet(viewsets.ModelViewSet):
     queryset = Interview.objects.all()
     serializer_class = InterviewSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['user', 'target_user', 'survey']
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -56,6 +57,16 @@ class InterviewViewSet(viewsets.ModelViewSet):
         res = {"categories": categories.data, "self": list(selff), "colleagues": list(colleagues),
                "company": list(company)}
         return HttpResponse(json.dumps(res, ensure_ascii=False))
+      
+    @action(detail=False, methods=['post'])
+    def create_interviews(self, request):
+        serializer = self.get_serializer(data=request.data, many=isinstance(request.data, list))
+        if serializer.is_valid():
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class GradeViewSet(viewsets.ModelViewSet):

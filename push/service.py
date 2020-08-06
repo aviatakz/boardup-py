@@ -4,8 +4,8 @@ from rating_back import settings
 from .models import User
 
 
-def send_notification(**self):
-    recipient = User.objects.get(id=self.get("recipient_id"))
+def send_notification(obj):
+    recipient = User.objects.get(id=obj.get("recipient_id"))
     notification = MobileNotification()
     notification.recipient = recipient
     interview_count = recipient.interviews.all().count()

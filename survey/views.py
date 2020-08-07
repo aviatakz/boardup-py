@@ -1,12 +1,11 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
 
 from .models import Question, Interview, Grade, Survey, Category
 from .serializers import QuestionSerializer, InterviewSerializer, \
-    GradeSerializer, SurveySerializer, InterviewSurveyQuesitonSerializer, CategorySerializer,\
+    GradeSerializer, InterviewSurveyQuesitonSerializer, CategorySerializer, \
     SurveyQuestionsSerializer
 
 
@@ -64,12 +63,7 @@ class GradeViewSet(viewsets.ModelViewSet):
 
 class SurveyViewSet(viewsets.ModelViewSet):
     queryset = Survey.objects.all()
-    serializer_class = SurveySerializer
-
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = SurveyQuestionsSerializer(instance)
-        return Response(serializer.data)
+    serializer_class = SurveyQuestionsSerializer
 
 
 class CategoryViewSet(viewsets.ModelViewSet):

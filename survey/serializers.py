@@ -61,12 +61,10 @@ class InterviewSerializer(serializers.ModelSerializer):
         fields = ('id', 'user_id', 'target_user_id', 'target_user', 'survey_id', 'created_at', 'comment', 'is_done')
 
     def check_is_done(self, obj):
-        count_questions = Question.objects.filter(survey_id=obj.survey_id).count()
-        count_grades = obj.grades.all().count()
-        if count_grades == count_questions:
-            return True
-        return False
-
+        has_ungraded = Question.objects.filter(survey_id=obj.survey_id, grade__isnull=True).exists()
+        if has_ungraded:
+            return False
+        return True
 
 
 class InterviewSurveyQuesitonSerializer(serializers.ModelSerializer):

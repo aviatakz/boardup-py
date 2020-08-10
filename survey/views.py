@@ -42,8 +42,8 @@ class InterviewViewSet(viewsets.ModelViewSet):
 
     @action(detail=False)
     def results(self, request):
-        user_id = request.data["user_id"]
-        survey_id = request.data["survey_id"]
+        user_id = request.GET["user_id"]
+        survey_id = request.GET["survey_id"]
 
         grades = Grade.objects.values('question__category').annotate(avg=Avg('value'))
         company = grades.filter(interview__survey=survey_id)

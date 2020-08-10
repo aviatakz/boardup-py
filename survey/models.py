@@ -16,7 +16,7 @@ class Survey(models.Model):
 class Interview(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="interviews")
     target_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="interviews_target")
-    comment = models.TextField(default='')
+    comment = models.TextField(default='', blank=True)
     created_at = models.DateField(auto_now_add=True)
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE, related_name="interviews")
 
@@ -48,9 +48,10 @@ class Question(models.Model):
 class Grade(models.Model):
     created_at = models.DateField(auto_now_add=True)
     value = models.IntegerField()
-    question = models.OneToOneField(Question, on_delete=models.CASCADE, related_name="grade")
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="grades")
     interview = models.ForeignKey(Interview, on_delete=models.CASCADE, related_name="grades")
 
     class Meta:
         verbose_name = "Grade"
         verbose_name_plural = "Grades"
+        unique_together = ("interview_id", "question_id")

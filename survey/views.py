@@ -40,7 +40,7 @@ class InterviewViewSet(viewsets.ModelViewSet):
         serializer = InterviewSurveyQuesitonSerializer(instance)
         return Response(serializer.data)
 
-    @action(detail=False, methods=['post'])
+    @action(detail=False)
     def results(self, request):
         user_id = request.data["user_id"]
         survey_id = request.data["survey_id"]

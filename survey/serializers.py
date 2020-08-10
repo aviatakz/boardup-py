@@ -33,16 +33,8 @@ class GradeSerializer(serializers.ModelSerializer):
         fields = ('id', 'value', 'question_id', 'interview_id', 'created_at')
 
 
-class QuestionGradeSerializer(serializers.ModelSerializer):
-    grade = GradeSerializer(many=False, read_only=True)
-
-    class Meta:
-        model = Question
-        fields = ('id', 'description', 'category_id', 'survey_id', 'created_at', 'order', 'grade')
-
-
 class SurveyQuestionsSerializer(serializers.ModelSerializer):
-    questions = QuestionGradeSerializer(many=True, read_only=True)
+    questions = QuestionSerializer(many=True, read_only=True)
 
     class Meta:
         model = Survey
@@ -54,15 +46,22 @@ class InterviewSerializer(serializers.ModelSerializer):
     target_user_id = serializers.IntegerField(read_only=False)
     target_user = UserSerializer(many=False, read_only=True)
     survey_id = serializers.IntegerField(read_only=False)
+    is_done = serializers.SerializerMethodField('get_is_done')
 
     class Meta:
         model = Interview
-        fields = ('id', 'user_id', 'target_user_id', 'target_user', 'survey_id', 'created_at', 'comment')
+        fields = ('id', 'user_id', 'target_user_id', 'target_user', 'survey_id', 'created_at', 'comment', 'is_done')
+
+    def get_is_done(self, obj):
+        count_questions = Question.objects.filter(survey_id=obj.survey_id).count()
+        count_grades = obj.grades.all().count()
+        return count_questions == count_grades
 
 
 class InterviewSurveyQuesitonSerializer(serializers.ModelSerializer):
     survey = SurveyQuestionsSerializer(read_only=True)
+    grades = GradeSerializer(many=True, read_only=True)
 
     class Meta:
         model = Interview
-        fields = ('id', 'user_id', 'target_user_id', 'comment', 'survey')
+        fields = ('id', 'user_id', 'target_user_id', 'comment', 'survey', 'grades')

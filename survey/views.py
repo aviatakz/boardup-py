@@ -78,12 +78,7 @@ class GradeViewSet(viewsets.ModelViewSet):
 
 class SurveyViewSet(viewsets.ModelViewSet):
     queryset = Survey.objects.all()
-    serializer_class = SurveySerializer
-
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = SurveyQuestionsSerializer(instance)
-        return Response(serializer.data)
+    serializer_class = SurveyQuestionsSerializer
 
 
 class CategoryViewSet(viewsets.ModelViewSet):

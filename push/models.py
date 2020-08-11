@@ -19,3 +19,4 @@ class MobileNotification(models.Model):
     status = models.CharField(max_length=10, default='unread')
     data = JSONField()
     is_received = models.BooleanField(default=False)
+

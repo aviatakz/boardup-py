@@ -1,7 +1,7 @@
+from django.conf import settings
 from pyfcm import FCMNotification
 from .models import MobileNotification
-from rating_back import settings
-from .models import User
+from user.models import User
 
 
 def send_notification(obj):

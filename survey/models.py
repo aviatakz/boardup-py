@@ -20,6 +20,12 @@ class Interview(models.Model):
     created_at = models.DateField(auto_now_add=True)
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE, related_name="interviews")
 
+    @property
+    def is_done(self):
+        count_questions = Question.objects.filter(survey_id=self.survey_id).count()
+        count_grades = self.grades.all().count()
+        return count_questions == count_grades
+
     class Meta:
         verbose_name = "Interview"
         verbose_name_plural = "Interviews"

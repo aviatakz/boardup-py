@@ -47,16 +47,10 @@ class InterviewSerializer(serializers.ModelSerializer):
     target_user_id = serializers.IntegerField(read_only=False)
     target_user = UserSerializer(many=False, read_only=True)
     survey_id = serializers.IntegerField(read_only=False)
-    is_done = serializers.SerializerMethodField('get_is_done')
 
     class Meta:
         model = Interview
         fields = ('id', 'user_id', 'user', 'target_user_id', 'target_user', 'survey_id', 'created_at', 'comment', 'is_done')
-
-    def get_is_done(self, obj):
-        count_questions = Question.objects.filter(survey_id=obj.survey_id).count()
-        count_grades = obj.grades.all().count()
-        return count_questions == count_grades
 
 
 class InterviewSurveyQuesitonSerializer(serializers.ModelSerializer):

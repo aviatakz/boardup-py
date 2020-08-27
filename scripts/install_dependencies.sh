@@ -1,1 +1,1 @@
-python3 -m pip install -r /var/www/html/boardup-py/requirements.txt
+python3 -m pip3 install -r /var/www/html/boardup-py/requirements.txt

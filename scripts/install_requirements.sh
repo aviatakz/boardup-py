@@ -1,0 +1,1 @@
+pip3 install -r /var/www/html/boardup-py/requirements.txt

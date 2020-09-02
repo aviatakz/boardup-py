@@ -1,1 +1,1 @@
-python3 manage.py runserver 0.0.0.0:8000
+python3 /var/www/html/boardup-py/manage.py runserver 0.0.0.0:8000

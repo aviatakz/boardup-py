@@ -20,18 +20,33 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 try:
     secrets = get_secret()
-except:
-    secrets = {}
+    SECRET_KEY = secrets['SECRET_KEY']
+    ALLOWED_HOSTS = secrets['ALLOWED_HOSTS'].split(',')
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': secrets['DB_NAME'],
+            'USER': secrets['DB_USER'],
+            'PASSWORD': secrets['DB_PASSWORD'],
+            'HOST': secrets['DB_HOST'],
+            'PORT': secrets['DB_PORT'],
+        }
+    }
+except Exception:
+    SECRET_KEY = os.environ.get('SECRET_KEY', 'some_default')
+    ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ.get('DB_NAME', 'postgres'),
+            'USER': os.environ.get('DB_USER', 'postgres'),
+            'PASSWORD': os.environ.get('DB_PASSWORD', 'password'),
+            'HOST': os.environ.get('DB_HOST', 'db'),
+            'PORT': os.environ.get('DB_PORT', 5432),
+        }
+    }
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = secrets['SECRET_KEY'] or os.environ.get('SECRET_KEY', 'some_default')
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = secrets['ALLOWED_HOSTS'] or os.environ.get('ALLOWED_HOSTS', '').split(',')
 
 FIREBASE_API_KEY = os.environ.get('FIREBASE_API_KEY', '')
 
@@ -96,20 +111,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'rating_back.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': secrets['DB_NAME'] or os.environ.get('DB_NAME', 'postgres'),
-        'USER': secrets['DB_USER'] or os.environ.get('DB_USER', 'postgres'),
-        'PASSWORD': secrets['DB_PASSWORD'] or os.environ.get('DB_PASSWORD', 'password'),
-        'HOST': secrets['DB_HOST'] or os.environ.get('DB_HOST', 'db'),
-        'PORT': secrets['DB_PORT'] or os.environ.get('DB_PORT', 5432),
-    }
-}
-
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -146,7 +147,7 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.UserRateThrottle'
     ],
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '10/day',
+        'anon': '1000/day',
         'user': '1000/day'
     },
 }

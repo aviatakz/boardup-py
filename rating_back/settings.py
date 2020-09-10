@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import datetime
+import json
 import os
 
 from .secrets import get_secret
@@ -19,7 +20,7 @@ from .secrets import get_secret
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 try:
-    secrets = get_secret()
+    secrets = json.loads(get_secret())
     SECRET_KEY = secrets['SECRET_KEY']
     ALLOWED_HOSTS = secrets['ALLOWED_HOSTS'].split(',')
     DATABASES = {
